@@ -12,7 +12,7 @@ function AppLayout() {
   const nodeRef = useRef(null);
   const { isLoading } = useAuth();
   return (
-    <div className="bg-slate-100 h-full pb-[16px]  md:pt-[24px] min-[1440px]:flex  min-[1440px]:flex-col  min-[1440px]:items-center relative">
+    <div className=" h-full pb-[16px]  md:pt-[24px] min-[1440px]:flex  min-[1440px]:flex-col  min-[1440px]:items-center relative">
       <AppNav />
       <div className="min-[1440px]:grid w-full  min-[1440px]:max-w-[1392px] min-[1440px]:gap-6 grid-cols-5 relative">
         <DesktopViewSummary />

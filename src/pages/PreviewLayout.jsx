@@ -12,7 +12,7 @@ function Preview() {
   const { isLoading } = useAuth();
 
   return (
-    <div className="bg-[#fafafa] md:bg-[#633CFF] md:h-[357px] md:pt-6 rounded-b-[32px] h-full">
+    <div className="md:bg-[#633CFF] md:h-[357px] md:pt-6 rounded-b-[32px] h-full">
       <div className=" md:relative">
         <div className="flex items-center justify-between gap-4 md:bg-white md:justify-between md:max-w-[720px] md:m-auto p-4 md:rounded-[8px] min-[1440px]:max-w-[1392px]">
           <Button

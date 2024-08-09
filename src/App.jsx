@@ -10,6 +10,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import Login from "./components/Login/Login";
 import CreateAccount from "./components/Login/CreateAccount";
 import { AppFeaturesProvider } from "./contexts/AppFeaturesContext";
+import BodyWrapper from "./components/BodyWrapper";
 
 function App() {
   return (
@@ -17,20 +18,22 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <AppFeaturesProvider>
-            <Routes>
-              <Route path="/" element={<LoginLayout />}>
-                <Route index element={<Navigate to="signup" />} />
-                <Route path="signup" element={<CreateAccount />} />
-                <Route path="login" element={<Login />} />
-              </Route>
-              <Route path="app" element={<AppLayout />}>
-                <Route index element={<Navigate to="links" />} />
-                <Route path="links" element={<Links />} />
-                <Route path="profile" element={<Profile />} />
-              </Route>
-              <Route path="preview" element={<PreviewLayout />} />
-              <Route path="*" element={<PageNotFound />} />
-            </Routes>
+            <BodyWrapper>
+              <Routes>
+                <Route path="/" element={<LoginLayout />}>
+                  <Route index element={<Navigate to="signup" />} />
+                  <Route path="signup" element={<CreateAccount />} />
+                  <Route path="login" element={<Login />} />
+                </Route>
+                <Route path="app" element={<AppLayout />}>
+                  <Route index element={<Navigate to="links" />} />
+                  <Route path="links" element={<Links />} />
+                  <Route path="profile" element={<Profile />} />
+                </Route>
+                <Route path="preview" element={<PreviewLayout />} />
+                <Route path="*" element={<PageNotFound />} />
+              </Routes>
+            </BodyWrapper>
           </AppFeaturesProvider>
         </AuthProvider>
       </BrowserRouter>
