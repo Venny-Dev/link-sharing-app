@@ -1,0 +1,169 @@
+import { toast } from 'react-toastify'
+
+export const options = [
+  { value: 'Github', label: 'Github', icon: '/githubblack-icon.svg' },
+  {
+    value: 'Frontend Mentor',
+    label: 'Frontend Mentor',
+    icon: '/frontendmentorblack-icon.svg'
+  },
+  { value: 'Twitter', label: 'Twitter', icon: '/twitterblack-icon.svg' },
+  { value: 'Linkedin', label: 'Linkedin', icon: '/linkedinblack-icon.svg' },
+  { value: 'YouTube', label: 'YouTube', icon: '/youtubeblack-icon.svg' },
+  { value: 'Facebook', label: 'Facebook', icon: '/facebookblack-icon.svg' },
+  { value: 'Twitch', label: 'Twitch', icon: '/twitchblack-icon.svg' },
+  { value: 'Devto', label: 'Dev.to', icon: '/devtodark-icon.svg' },
+  { value: 'Codewars', label: 'Codewars', icon: '/codewarsdark-icon.svg' },
+  { value: 'Codepen', label: 'Codepen', icon: '/codependark-icon.svg' },
+  {
+    value: 'FreeCodeCamp',
+    label: 'FreeCodeCamp',
+    icon: '/freecodecampdark-icon.svg'
+  },
+  { value: 'GitLab', label: 'GitLab', icon: '/gitlabdark-icon.svg' },
+  { value: 'Hashnode', label: 'Hashnode', icon: '/hashnodedark-icon.svg' },
+  {
+    value: 'StackOverflow',
+    label: 'Stack Overflow',
+    icon: '/stackoverflowdark-icon.svg'
+  }
+]
+
+export function getPlatformColor (value) {
+  if (value === 'Github') return 'bg-[#1A1A1A]'
+  if (value === 'Frontend Mentor') return 'bg-[#FFFFFF}'
+  if (value === 'Twitter') return 'bg-[#43B7E9]'
+  if (value === 'Linkedin') return 'bg-[#2D68FF]'
+  if (value === 'YouTube') return 'bg-[#EE3939]'
+  if (value === 'Devto') return 'bg-[#333333]'
+  if (value === 'Codewars') return 'bg-[#8A1A50]'
+  if (value === 'FreeCodeCamp') return 'bg-[#302267]'
+  if (value === 'GitLab') return 'bg-[#EB4925]'
+  if (value === 'Hashnode') return 'bg-[#0330D1]'
+  if (value === 'StackOverflow') return 'bg-[#EC7100]'
+  if (value === 'Facebook') return 'bg-[#2442AC]'
+
+  return ''
+}
+
+export const validateLoginData = formData => {
+  const newErrors = {}
+
+  if (!formData.email.includes('@')) {
+    newErrors.email = 'Invalid email address'
+  }
+  if (formData.email === '') {
+    newErrors.email = "Can't be empty"
+  }
+
+  if (formData.password.length < 8) {
+    newErrors.password = 'Please check again'
+  }
+  if (formData.password === '') {
+    newErrors.password = "Can't be empty"
+  }
+
+  if (
+    formData?.confirmPassword &&
+    formData.password !== formData.confirmPassword
+  ) {
+    newErrors.password = 'Please check again'
+  }
+
+  return newErrors
+}
+
+export function validateLinksInputFields (amtOfLinkContainer) {
+  const errors = amtOfLinkContainer
+    .filter(container => container.link === '')
+    .map(container => ({ id: container.id }))
+
+  return errors
+}
+
+export function handleLinkChange (link, id, setAmtOfLinkContainer) {
+  setAmtOfLinkContainer(prevContaiers =>
+    prevContaiers.map(prevContaier =>
+      prevContaier.id === id ? { ...prevContaier, link } : prevContaier
+    )
+  )
+}
+
+export function handleImageChange (e, setUserDetails, setImage) {
+  const file = e.target.files[0]
+  handleImageUpload(file, setUserDetails, setImage)
+}
+
+export const handleDrop = (e, setUserDetails, setImage) => {
+  e.preventDefault()
+  const file = e.dataTransfer.files[0]
+
+  handleImageUpload(file, setUserDetails, setImage)
+}
+
+export const handleDragOver = e => {
+  e.preventDefault()
+}
+
+async function validateImage (file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+
+    reader.onload = event => {
+      const img = new Image()
+      img.onload = () => {
+        if (img.width <= 1024 && img.height <= 1024) {
+          resolve(true)
+        } else {
+          resolve(false)
+        }
+      }
+      img.onerror = () => {
+        reject(new Error('Failed to load image'))
+      }
+
+      img.src = event.target.result
+    }
+
+    reader.readAsDataURL(file)
+  })
+}
+
+async function handleImageUpload (file, setUserDetails, setImage) {
+  if (!file) {
+    return
+  }
+
+  // Check file type
+  if (!file.type.startsWith('image/')) {
+    toast.error('Please upload an image file (PNG or JPG).')
+    return
+  }
+
+  try {
+    const isValid = await validateImage(file)
+
+    if (isValid) {
+      const reader = new FileReader()
+      reader.onload = event => {
+        setUserDetails(prevUserDetails => ({
+          ...prevUserDetails,
+          profilePicture: event.target.result
+        })) // Set preview URL for image
+      }
+      reader.readAsDataURL(file)
+      setImage(file) // Store selected image file
+    } else {
+      setUserDetails(prevUserDetails => ({
+        ...prevUserDetails,
+        profilePicture: prevUserDetails.profilePicture
+          ? prevUserDetails.profilePicture
+          : ''
+      }))
+      toast.error('Image size must not exceed 1024x1024 pixels')
+    }
+  } catch (error) {
+    toast.error('Error validating image')
+    console.error('Error validating image:', error.message)
+  }
+}
