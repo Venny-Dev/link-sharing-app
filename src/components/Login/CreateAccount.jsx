@@ -15,7 +15,7 @@ function CreateAccount() {
   const navigate = useNavigate();
 
   return (
-    <div>
+    <div className=" mb-5">
       <form
         className="mt-[40px] md:mt-0"
         onSubmit={(e) => {
