@@ -29,12 +29,12 @@ function AppLayout() {
           </CSSTransition>
         </TransitionGroup>
       </div>
-      {isLoading && (
+      {/* {isLoading && (
         <>
           <Loader />
           <div className="absolute inset-0 bg-gray-800 opacity-40 w-full h-full"></div>
         </>
-      )}
+      )} */}
     </div>
   );
 }

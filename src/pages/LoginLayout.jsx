@@ -31,12 +31,12 @@ function LoginCreateAccount() {
             </p>
           )}
 
-          {isLoading && (
+          {/* {isLoading && (
             <div className="absolute inset-0 bg-gray-800 opacity-40 w-full h-full"></div>
-          )}
+          )} */}
         </div>
 
-        {isLoading && <Loader />}
+        {/* {isLoading && <Loader />} */}
       </div>
     </div>
   );
