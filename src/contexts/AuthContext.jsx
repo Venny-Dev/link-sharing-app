@@ -5,7 +5,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 
 import { getUserProfile } from "../firebase/firebaseUtils";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -27,15 +27,37 @@ function AuthProvider({ children }) {
   const [errors, setErrors] = useState({});
   const [loginErrors, setLoginErrors] = useState({});
   const [user, setUser] = useState(null);
+  const location = useLocation();
+  const { id } = useParams();
+  const currentPath = location.pathname;
 
   useEffect(() => {
     setIsLoading(true);
-    const unsubscribe = onAuthStateChanged(auth, async (data) => {
+    onAuthStateChanged(auth, async (data) => {
       try {
         if (data) {
           const curUser = await getUserProfile(data?.uid);
           setUser(curUser);
-          navigate("/app");
+          console.log(currentPath);
+
+          const previewId = location.pathname.split("/preview/")[1];
+          if (
+            location.pathname.startsWith("/preview") &&
+            previewId === undefined
+          ) {
+            return;
+          }
+          if (location.pathname.startsWith("/app")) {
+            navigate("/app");
+            return;
+          }
+          if (
+            location.pathname.startsWith("/preview") &&
+            previewId !== undefined
+          ) {
+            return;
+          }
+          console.log(location.pathname);
         } else {
           setUser(null);
         }
@@ -46,7 +68,7 @@ function AuthProvider({ children }) {
         setIsLoading(false);
       }
 
-      return () => unsubscribe();
+      // return () => unsubscribe();
     });
   }, []);
 
