@@ -28,7 +28,7 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     setIsLoading(true);
-    onAuthStateChanged(auth, async (data) => {
+    const unsubscribe = onAuthStateChanged(auth, async (data) => {
       try {
         if (data) {
           const curUser = await getUserProfile(data?.uid);
@@ -41,6 +41,8 @@ function AuthProvider({ children }) {
       } finally {
         setIsLoading(false);
       }
+
+      return () => unsubscribe();
     });
   }, []);
 
@@ -58,6 +60,7 @@ function AuthProvider({ children }) {
     user,
     isSigningOut,
     setIsSigningOut,
+    setUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

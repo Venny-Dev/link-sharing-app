@@ -9,9 +9,9 @@ import {
 } from "../firebase/helpers";
 
 function Profile() {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
 
-  const { handleProfileSubmit, handleChangeUserData, setImage } =
+  const { handleChangeUserData, setImage, handleProfileSubmit } =
     useAppFeatures();
 
   const [userDetails, setUserDetails] = useState({
@@ -25,7 +25,7 @@ function Profile() {
     setUserDetails((prevDetails) => ({
       ...prevDetails,
       email: user?.email || prevDetails.email,
-      firstName: user?.firstName || prevDetails.firstName,
+      firstName: user?.firstName,
       lastName: user?.lastName || prevDetails.lastName,
       profilePicture: user?.profilePicture || prevDetails.profilePicture,
     }));
@@ -94,7 +94,7 @@ function Profile() {
       </div>
 
       <div className="bg-[#FAFAFA] p-[20px] mt-[24px] rounded-[8px]">
-        <form onSubmit={(e) => handleProfileSubmit(e, userDetails)}>
+        <form onSubmit={(e) => handleProfileSubmit(e, userDetails, setUser)}>
           <div className="flex flex-col relative ">
             <label className="text-[#333333]  font-[400] text-[12px] leading-[18px]">
               First name*

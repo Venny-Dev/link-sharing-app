@@ -14,11 +14,13 @@ import {
   validateLinksInputFields,
   handleLinkChange,
 } from "../firebase/helpers";
+import { auth } from "../firebase/firebaseConfig";
+import { getUserProfile } from "../firebase/firebaseUtils";
 
 const AppFeaturesContexts = createContext();
 
 function AppFeaturesProvider({ children }) {
-  const { user, setIsLoading } = useAuth();
+  const { user, setIsLoading, isLoading } = useAuth();
   const [amtOfLinkContainer, setAmtOfLinkContainer] = useState([]);
   const [errorId, setErrorId] = useState([]);
   const [image, setImage] = useState(null);
@@ -124,14 +126,21 @@ function AppFeaturesProvider({ children }) {
     }
   }, []);
 
-  async function handleProfileSubmit(e, userDetails) {
+  async function handleProfileSubmit(e, userDetails, setUser) {
     e.preventDefault();
 
-    console.log(userDetails);
-
     setIsLoading(true);
+
     try {
-      await updateUserProfile(user.id, userDetails, image);
+      await updateUserProfile(user.id, userDetails);
+      console.log("User profile updated successfully:", userDetails);
+      console.log(user);
+
+      const updatedUser = await getUserProfile(user.id);
+
+      console.log(updatedUser);
+      setUser(updatedUser);
+
       toast.success("Profile updated successfully");
     } catch (error) {
       toast.error(error.message);
