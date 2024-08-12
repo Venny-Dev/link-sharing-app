@@ -1,4 +1,4 @@
-import Loader from "../components/Loader";
+// import Loader from "../components/Loader";
 
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../contexts/AuthContext";
@@ -6,7 +6,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 function LoginCreateAccount() {
-  const { isLoading } = useAuth();
+  // const { isLoading } = useAuth();
   const location = useLocation();
 
   // console.log(isLoading);

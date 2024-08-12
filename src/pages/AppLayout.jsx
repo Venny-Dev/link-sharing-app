@@ -5,12 +5,12 @@ import { Outlet, useLocation } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import DesktopViewSummary from "../components/AppLinks/DesktopViewSummary";
 import { useAuth } from "../contexts/AuthContext";
-import Loader from "../components/Loader";
+// import Loader from "../components/Loader";
 
 function AppLayout() {
   const location = useLocation();
   const nodeRef = useRef(null);
-  const { isLoading } = useAuth();
+  // const { isLoading } = useAuth();
   return (
     <div className=" h-full pb-[16px]  md:pt-[24px] min-[1440px]:flex  min-[1440px]:flex-col  min-[1440px]:items-center relative">
       <AppNav />
