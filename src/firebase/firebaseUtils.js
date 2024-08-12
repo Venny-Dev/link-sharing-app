@@ -14,7 +14,7 @@ export async function handleSubmitLogin (
   const validationErrors = validateLoginData(userData)
   setErrorFunc(validationErrors)
 
-  // For creating account
+  // For CREATING ACCOUNT
   if (Object.keys(validationErrors).length === 0 && userData?.confirmPassword) {
     setIsLoading(true)
     try {
@@ -39,7 +39,7 @@ export async function handleSubmitLogin (
     }
   }
 
-  // For logging in
+  // FOR LOGGING IN
   if (
     Object.keys(validationErrors).length === 0 &&
     !userData?.confirmPassword

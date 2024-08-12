@@ -5,10 +5,12 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 
 import { getUserProfile } from "../firebase/firebaseUtils";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [createAccountData, setCreateAccountData] = useState({
     email: "",
@@ -33,18 +35,20 @@ function AuthProvider({ children }) {
         if (data) {
           const curUser = await getUserProfile(data?.uid);
           setUser(curUser);
+          navigate("/app");
         } else {
           setUser(null);
         }
       } catch (err) {
         toast.error("Error getting user profile");
+        navigate("/login");
       } finally {
         setIsLoading(false);
       }
 
       return () => unsubscribe();
     });
-  }, []);
+  }, [navigate]);
 
   const value = {
     isLoading,

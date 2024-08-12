@@ -14,13 +14,13 @@ import {
   validateLinksInputFields,
   handleLinkChange,
 } from "../firebase/helpers";
-import { auth } from "../firebase/firebaseConfig";
+
 import { getUserProfile } from "../firebase/firebaseUtils";
 
 const AppFeaturesContexts = createContext();
 
 function AppFeaturesProvider({ children }) {
-  const { user, setIsLoading, isLoading } = useAuth();
+  const { user, setIsLoading } = useAuth();
   const [amtOfLinkContainer, setAmtOfLinkContainer] = useState([]);
   const [errorId, setErrorId] = useState([]);
   const [image, setImage] = useState(null);
