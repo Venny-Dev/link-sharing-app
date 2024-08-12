@@ -41,14 +41,14 @@ function AuthProvider({ children }) {
         }
       } catch (err) {
         toast.error("Error getting user profile");
-        navigate("/login");
+        // navigate("/login");
       } finally {
         setIsLoading(false);
       }
 
       return () => unsubscribe();
     });
-  }, [navigate]);
+  }, []);
 
   const value = {
     isLoading,

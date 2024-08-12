@@ -48,8 +48,8 @@ export async function handleSubmitLogin (
     try {
       await handleLogin(userData.email, userData.password)
 
-      navigate('/app')
       toast.success('Login sucess')
+      navigate('/app')
     } catch (err) {
       toast.error(err.message)
     } finally {
