@@ -4,7 +4,7 @@ import Loader from "./Loader";
 function BodyWrapper({ children }) {
   const { isLoading } = useAuth();
   return (
-    <div className="md:bg-[#D9D9D9]  min-h-screen pb-24 relative">
+    <div className="md:bg-[#D9D9D9]  min-h-screen pb-24 relative flex justify-center w-full">
       {children}
       {isLoading && (
         <>
