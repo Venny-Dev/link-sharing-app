@@ -1,6 +1,7 @@
 import {
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  signOut
 } from 'firebase/auth'
 import { auth } from './firebaseConfig'
 
@@ -11,7 +12,7 @@ async function handleSignup (email, password) {
       email,
       password
     )
-    // const user = auth.currentUser
+
     return userCredential.user
   } catch (error) {
     throw new Error(error.code.slice(5))
@@ -31,4 +32,12 @@ async function handleLogin (email, password) {
   }
 }
 
-export { handleSignup, handleLogin }
+async function handleSignOut () {
+  try {
+    return await signOut(auth)
+  } catch (error) {
+    throw new Error(error.code.slice(5))
+  }
+}
+
+export { handleSignup, handleLogin, handleSignOut }

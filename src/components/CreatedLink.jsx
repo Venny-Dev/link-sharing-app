@@ -1,7 +1,6 @@
 import { getPlatformColor } from "../firebase/helpers";
 
 function CreatedLink({ link, view }) {
-  console.log(`${link.label}-icon.png`);
   return (
     <div
       className={` ${getPlatformColor(link.value)} flex items-center justify-between p-4  rounded-[8px]   ${view === "preview" ? "h-[56px] mb-[20px] w-full " : "h-[44px] w-[237px] mb-[14px] "}  `}

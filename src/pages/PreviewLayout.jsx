@@ -6,10 +6,11 @@ import { useAuth } from "../contexts/AuthContext";
 import Loader from "../components/Loader";
 
 import PreviewProfile from "../components/PreviewProfile";
+import { handleCopy } from "../firebase/helpers";
 
 function Preview() {
   const navigate = useNavigate();
-  const { isLoading } = useAuth();
+  const { isLoading, user } = useAuth();
 
   return (
     <div className="md:bg-[#633CFF] md:h-[357px] md:pt-6 rounded-b-[32px] w-full">
@@ -22,10 +23,15 @@ function Preview() {
             Back to Editor
           </Button>
 
-          <Button className=" text-white w-full max-w-[159px]">Share</Button>
+          <Button
+            className=" text-white w-full max-w-[159px]"
+            onClick={() => handleCopy(user.id)}
+          >
+            Share
+          </Button>
         </div>
 
-        <PreviewProfile view="preview" />
+        <PreviewProfile view="preview" userId={user?.id} />
       </div>
 
       {isLoading && (

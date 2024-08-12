@@ -1,15 +1,9 @@
-// import Loader from "../components/Loader";
-
 import "react-toastify/dist/ReactToastify.css";
-import { useAuth } from "../contexts/AuthContext";
 
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 function LoginCreateAccount() {
-  // const { isLoading } = useAuth();
   const location = useLocation();
-
-  // console.log(isLoading);
 
   return (
     <div className="font-sans h-full  md:py-[20px]  md:bg-[#D9D9D9] w-full relative">
@@ -30,13 +24,7 @@ function LoginCreateAccount() {
               </Link>
             </p>
           )}
-
-          {/* {isLoading && (
-            <div className="absolute inset-0 bg-gray-800 opacity-40 w-full h-full"></div>
-          )} */}
         </div>
-
-        {/* {isLoading && <Loader />} */}
       </div>
     </div>
   );

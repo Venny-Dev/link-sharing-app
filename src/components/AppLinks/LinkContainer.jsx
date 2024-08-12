@@ -22,7 +22,6 @@ function LinkContainer({ id, position, container }) {
     userLink: container.link,
   });
 
-  // console.log(container);
   useEffect(() => {
     if (container.value) {
       const matchedOption = options.find(

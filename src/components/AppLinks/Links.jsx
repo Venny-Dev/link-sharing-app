@@ -10,7 +10,7 @@ function Links() {
 
   // console.log(amtOfLinkContainer);
 
-  console.log(window.location.pathname.slice(5));
+  // console.log(window.location.pathname.slice(5));
 
   return (
     <main className="p-[24px] min-[1440px]:p-[40px] bg-white m-[16px] rounded-[8px] mb-[16px] max-w-[720px] md:m-auto md:mt-[24px] min-[1440px]:max-w-[808px] w-full ">

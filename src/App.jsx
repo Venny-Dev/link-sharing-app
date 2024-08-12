@@ -11,6 +11,8 @@ import Login from "./components/Login/Login";
 import CreateAccount from "./components/Login/CreateAccount";
 import { AppFeaturesProvider } from "./contexts/AppFeaturesContext";
 import BodyWrapper from "./components/BodyWrapper";
+import SharedPreview from "./components/SharedPreview";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -25,12 +27,27 @@ function App() {
                   <Route path="signup" element={<CreateAccount />} />
                   <Route path="login" element={<Login />} />
                 </Route>
-                <Route path="app" element={<AppLayout />}>
+                <Route
+                  path="app"
+                  element={
+                    <ProtectedRoute>
+                      <AppLayout />
+                    </ProtectedRoute>
+                  }
+                >
                   <Route index element={<Navigate to="links" />} />
                   <Route path="links" element={<Links />} />
                   <Route path="profile" element={<Profile />} />
                 </Route>
-                <Route path="preview" element={<PreviewLayout />} />
+                <Route
+                  path="preview"
+                  element={
+                    <ProtectedRoute>
+                      <PreviewLayout />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="preview/:id" element={<SharedPreview />} />
                 <Route path="*" element={<PageNotFound />} />
               </Routes>
             </BodyWrapper>

@@ -4,9 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
 body {
-  @apply h-full;
+  background-color: #d9d9d9;
 }
 .nav-link-active {
   background-color: #efebff;

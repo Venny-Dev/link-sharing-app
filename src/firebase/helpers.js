@@ -42,6 +42,7 @@ export function getPlatformColor (value) {
   if (value === 'Hashnode') return 'bg-[#0330D1]'
   if (value === 'StackOverflow') return 'bg-[#EC7100]'
   if (value === 'Facebook') return 'bg-[#2442AC]'
+  if (value === 'Twitch') return 'bg-[#EE3FC8]'
 
   return ''
 }
@@ -165,5 +166,34 @@ async function handleImageUpload (file, setUserDetails, setImage) {
   } catch (error) {
     toast.error('Error validating image')
     console.error('Error validating image:', error.message)
+  }
+}
+
+export const handleCopy = id => {
+  navigator.clipboard
+    .writeText(`${window.location}/${id}`)
+    .then(() => {
+      toast.success('Link copied to clipboard!')
+    })
+    .catch(err => {
+      toast.error('Failed to copy text: ', err)
+    })
+}
+
+export function handleChangeLogin (e, setterFunc, variable, errors) {
+  if (e.target.type === 'email') {
+    delete errors.email
+    setterFunc({
+      ...variable,
+      email: e.target.value
+    })
+  }
+
+  if (e.target.type === 'password') {
+    delete errors.password
+    setterFunc({
+      ...variable,
+      password: e.target.value
+    })
   }
 }

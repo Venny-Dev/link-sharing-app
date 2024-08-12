@@ -2,8 +2,6 @@ import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
-// import { getAnalytics } from 'firebase/analytics'
-// import { getDatabase } from 'firebase/database'
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -15,9 +13,6 @@ const firebaseConfig = {
   databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
   measurementId: 'G-K155Q4JT0J'
 }
-
-// const analytics = getAnalytics(app)
-// const database = getDatabase(app)
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)

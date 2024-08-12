@@ -1,7 +1,76 @@
-import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore'
 import { db, storage } from './firebaseConfig'
 import { toast } from 'react-toastify'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { handleLogin, handleSignup, handleSignOut } from '../firebase/auth'
+import { validateLoginData } from '../firebase/helpers'
+
+export async function handleSubmitLogin (
+  userData,
+  setErrorFunc,
+  navigate,
+  setIsLoading
+) {
+  const validationErrors = validateLoginData(userData)
+  setErrorFunc(validationErrors)
+
+  // For creating account
+  if (Object.keys(validationErrors).length === 0 && userData?.confirmPassword) {
+    setIsLoading(true)
+    try {
+      const user = await handleSignup(userData.email, userData.password)
+
+      if (user) {
+        await setDoc(doc(db, 'users', user.uid), {
+          firstName: '',
+          lastName: '',
+          email: userData.email,
+          links: [],
+          profilePicture: '',
+          id: user.uid
+        })
+      }
+      toast.success('Account created successfully')
+      navigate('/login')
+    } catch (err) {
+      toast.error(err.message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // For logging in
+  if (
+    Object.keys(validationErrors).length === 0 &&
+    !userData?.confirmPassword
+  ) {
+    setIsLoading(true)
+    try {
+      await handleLogin(userData.email, userData.password)
+
+      navigate('/app')
+      toast.success('Login sucess')
+    } catch (err) {
+      toast.error(err.message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+}
+
+export async function signOutuser (navigate, setIsLoading, setIsSigningOut) {
+  setIsLoading(true)
+  try {
+    await handleSignOut()
+    setIsSigningOut(false)
+    toast.success('Signed out sucessfully')
+    navigate('/login')
+  } catch (err) {
+    toast.error(err.message)
+  } finally {
+    setIsLoading(false)
+  }
+}
 
 export const getUserProfile = async userId => {
   try {

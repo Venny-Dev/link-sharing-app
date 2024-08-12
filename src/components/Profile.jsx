@@ -73,6 +73,7 @@ function Profile() {
                 type="file"
                 onChange={(e) => handleImageChange(e, setUserDetails, setImage)}
                 className="hidden"
+                accept="image/*"
               />
             </label>
             {userDetails.profilePicture && (

@@ -1,18 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { handleSubmitLogin } from "../../firebase/firebaseUtils";
+import { handleChangeLogin } from "../../firebase/helpers";
 
 function Login() {
   const navigate = useNavigate();
 
-  const {
-    handleSubmit,
-    loginData,
-    setIsLoading,
-    handleChange,
-    setLoginData,
-    loginErrors,
-    setLoginErrors,
-  } = useAuth();
+  const { loginData, setIsLoading, setLoginData, loginErrors, setLoginErrors } =
+    useAuth();
 
   return (
     <div>
@@ -21,7 +16,7 @@ function Login() {
         noValidate
         onSubmit={(e) => {
           e.preventDefault();
-          handleSubmit(loginData, setLoginErrors, navigate, setIsLoading);
+          handleSubmitLogin(loginData, setLoginErrors, navigate, setIsLoading);
         }}
       >
         <div>
@@ -43,7 +38,7 @@ function Login() {
             placeholder="e.g. alex@email.com"
             value={loginData.email}
             onChange={(e) =>
-              handleChange(e, setLoginData, loginData, loginErrors)
+              handleChangeLogin(e, setLoginData, loginData, loginErrors)
             }
           />
           <img src="/email-icon.svg" className="absolute top-[41px] left-3" />
@@ -66,7 +61,7 @@ function Login() {
             placeholder="Enter your password"
             value={loginData.password}
             onChange={(e) =>
-              handleChange(e, setLoginData, loginData, loginErrors)
+              handleChangeLogin(e, setLoginData, loginData, loginErrors)
             }
           />
           <img src="/lock-key.svg" className="absolute top-[40px] left-3" />

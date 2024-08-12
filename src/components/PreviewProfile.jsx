@@ -2,9 +2,8 @@ import CreatedLink from "./CreatedLink";
 import { useEffect, useState } from "react";
 import { getUserProfile } from "../firebase/firebaseUtils";
 import { toast } from "react-toastify";
-import { useAuth } from "../contexts/AuthContext";
 
-function PreviewProfile({ view }) {
+function PreviewProfile({ view, userId }) {
   const [previewDetails, setPreviewDetails] = useState({
     fullName: "",
     links: [],
@@ -12,14 +11,11 @@ function PreviewProfile({ view }) {
     profilePicture: "/transparent-icon.png",
   });
 
-  const { user } = useAuth();
-
   useEffect(() => {
     async function getPrevDetails() {
-      if (user) {
+      if (userId) {
         try {
-          const data = await getUserProfile(user.id);
-          console.log(data);
+          const data = await getUserProfile(userId);
 
           setPreviewDetails((prevDetails) => ({
             ...prevDetails,
@@ -30,13 +26,12 @@ function PreviewProfile({ view }) {
             links: data.links,
           }));
         } catch (err) {
-          console.log(err);
           toast.error("Error getting user details");
         }
       }
     }
     getPrevDetails();
-  }, [user, user?.id]);
+  }, [userId]);
 
   return (
     <div

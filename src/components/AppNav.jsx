@@ -1,7 +1,8 @@
 import { Link, NavLink } from "react-router-dom";
-// import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { useAuth } from "../contexts/AuthContext";
 
 function AppNav() {
+  const { setIsSigningOut } = useAuth();
   return (
     <nav className="flex items-center justify-around md:justify-between p-[16px]  bg-white w-full max-w-[720px] m-auto md:rounded-[8px] min-[1440px]:max-w-[1392px]">
       <div className="ml-[8px] flex items-center gap-[6px]">
@@ -59,13 +60,22 @@ function AppNav() {
         </NavLink>
       </div>
 
-      <div className="border-[#633CFF] border rounded-[8px] py-[11px] px-[16px]  hover:bg-[#EFEBFF] transition-colors duration-300 ease-in-out">
-        <Link to="/preview">
-          <img src="/preview-icon.png" alt="logo" className="md:hidden" />
-          <p className="text-[#633CFF] text-[16px] font-semibold leading-[24px] hidden md:block">
-            Preview
-          </p>
-        </Link>
+      <div className="flex items-center justify-center gap-3">
+        <button className="" onClick={() => setIsSigningOut(true)}>
+          <img
+            src="/signout-icon.png"
+            alt="signout-icon"
+            className="w-[35px]"
+          />
+        </button>
+        <div className="border-[#633CFF] border rounded-[8px] py-[11px] px-[16px]  hover:bg-[#EFEBFF] transition-colors duration-300 ease-in-out">
+          <Link to="/preview">
+            <img src="/preview-icon.png" alt="logo" className="md:hidden" />
+            <p className="text-[#633CFF] text-[16px] font-semibold leading-[24px] hidden md:block">
+              Preview
+            </p>
+          </Link>
+        </div>
       </div>
     </nav>
   );

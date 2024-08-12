@@ -1,12 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { handleSubmitLogin } from "../../firebase/firebaseUtils";
+import { handleChangeLogin } from "../../firebase/helpers";
 
 function CreateAccount() {
   const {
     setErrors,
     createAccountData,
-    handleSubmit,
-    handleChange,
     setIsLoading,
     errors,
     setCreateAccountData,
@@ -20,7 +20,12 @@ function CreateAccount() {
         className="mt-[40px] md:mt-0"
         onSubmit={(e) => {
           e.preventDefault();
-          handleSubmit(createAccountData, setErrors, navigate, setIsLoading);
+          handleSubmitLogin(
+            createAccountData,
+            setErrors,
+            navigate,
+            setIsLoading
+          );
         }}
         noValidate
       >
@@ -40,7 +45,12 @@ function CreateAccount() {
             placeholder="e.g. alex@email.com"
             value={createAccountData.email}
             onChange={(e) =>
-              handleChange(e, setCreateAccountData, createAccountData, errors)
+              handleChangeLogin(
+                e,
+                setCreateAccountData,
+                createAccountData,
+                errors
+              )
             }
           />
           <img src="/email-icon.svg" className="absolute top-[41px] left-3" />
@@ -61,7 +71,12 @@ function CreateAccount() {
             placeholder="At least 8 characters"
             value={createAccountData.password}
             onChange={(e) =>
-              handleChange(e, setCreateAccountData, createAccountData, errors)
+              handleChangeLogin(
+                e,
+                setCreateAccountData,
+                createAccountData,
+                errors
+              )
             }
           />
           <img src="/lock-key.svg" className="absolute top-[40px] left-3" />

@@ -44,23 +44,9 @@ function AppFeaturesProvider({ children }) {
         icon: options[0].icon,
         link: "",
         label: "",
-        iconColor: "",
       },
     ]);
   }
-
-  // handleLinkChange();
-  // if (amtOfLinkContainer.length === 0) {
-  //   try {
-  //     const empty = [];
-  //     await updateUserLink(user.id, empty);
-  //   } catch (err) {
-  //     toast.error(err.message);
-  //   }
-  // }
-  // setAmtOfLinkContainer(
-  //   amtOfLinkContainer.filter(({ id }) => id !== selectedId)
-  // );
 
   async function handleRemoveLinkContainer(selectedId) {
     const updatedContainers = amtOfLinkContainer.filter(
@@ -68,7 +54,7 @@ function AppFeaturesProvider({ children }) {
     );
     if (updatedContainers.length === 0) {
       try {
-        await updateUserLink(user.id, []);
+        // await updateUserLink(user.id, []);
         setAmtOfLinkContainer([]);
       } catch (err) {
         toast.error(err.message);
