@@ -132,7 +132,7 @@ function AppFeaturesProvider({ children }) {
     setIsLoading(true);
 
     try {
-      await updateUserProfile(user.id, userDetails);
+      await updateUserProfile(user.id, userDetails, image);
       console.log("User profile updated successfully:", userDetails);
       console.log(user);
 

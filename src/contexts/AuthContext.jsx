@@ -48,7 +48,7 @@ function AuthProvider({ children }) {
             return;
           }
           if (location.pathname.startsWith("/app")) {
-            navigate("/app");
+            // navigate("/app");
             return;
           }
           if (

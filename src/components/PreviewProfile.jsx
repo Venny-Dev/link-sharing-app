@@ -2,8 +2,10 @@ import CreatedLink from "./CreatedLink";
 import { useEffect, useState } from "react";
 import { getUserProfile } from "../firebase/firebaseUtils";
 import { toast } from "react-toastify";
+import { useAuth } from "../contexts/AuthContext";
 
 function PreviewProfile({ view, userId }) {
+  const { setUser } = useAuth;
   const [previewDetails, setPreviewDetails] = useState({
     fullName: "",
     links: [],

@@ -92,7 +92,7 @@ function CreateAccount() {
             Confirm password
           </label>
           <input
-            type="text"
+            type="password"
             className="border py-[12px] pr-[16px] pl-[44px] rounded-[8px] mt-[4px] placeholder-opacity-[50%] focus:outline-none focus:border-[#633CFF] focus:shadow-xl"
             placeholder="At least 8 characters"
             value={createAccountData.confirmPassword}
