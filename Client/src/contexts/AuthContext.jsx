@@ -57,7 +57,7 @@ function AuthProvider({ children }) {
           ) {
             return;
           }
-          console.log(location.pathname);
+          // console.log(location.pathname);
         } else {
           setUser(null);
         }
