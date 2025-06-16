@@ -1,12 +1,17 @@
 import { useAppFeatures } from "../../contexts/AppFeaturesContext";
 import Button from "../Button";
 import EmptyLink from "./EmptyLink";
+import Loader from "../Loader";
 
 import LinkContainer from "./LinkContainer";
 
 function Links() {
-  const { handleAddLinkContainer, amtOfLinkContainer, handleUpdateLink } =
-    useAppFeatures();
+  const {
+    handleAddLinkContainer,
+    amtOfLinkContainer,
+    handleUpdateLink,
+    isSavingLinks,
+  } = useAppFeatures();
 
   return (
     <main className="p-[24px] min-[1440px]:p-[40px] bg-white m-[16px] rounded-[8px] mb-[16px] max-w-[720px] md:m-auto md:mt-[24px] min-[1440px]:max-w-[808px] w-full ">
@@ -39,8 +44,11 @@ function Links() {
             ))}
           </div>
           <div className="flex justify-end">
-            <Button className=" mt-[24px] text-white w-full min-[1440px]:max-w-[91px]">
-              Save
+            <Button
+              className=" mt-[24px] text-white w-full min-[1440px]:max-w-[91px] flex items-center justify-center"
+              isDisabled={isSavingLinks}
+            >
+              {isSavingLinks ? <Loader /> : "Save"}
             </Button>
           </div>
         </form>

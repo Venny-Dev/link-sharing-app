@@ -12,7 +12,7 @@ function DesktopViewSummary() {
       <div>
         <img src="/illustration-phone-mockup.svg" alt="phone-mockup" />
       </div>
-      <PreviewProfile view={path} userId={user?.id} />
+      <PreviewProfile view={path} user={user} />
     </div>
   );
 }

@@ -12,6 +12,7 @@ function Preview() {
   const navigate = useNavigate();
   const { isLoading, user } = useAuth();
 
+  // console.log(user);
   return (
     <div className="md:bg-[#633CFF] md:h-[357px] md:pt-6 rounded-b-[32px] w-full">
       <div className=" md:relative">
@@ -31,7 +32,7 @@ function Preview() {
           </Button>
         </div>
 
-        <PreviewProfile view="preview" userId={user?.id} />
+        <PreviewProfile view="preview" user={user} />
       </div>
 
       {isLoading && (

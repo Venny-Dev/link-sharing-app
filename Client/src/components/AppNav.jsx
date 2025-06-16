@@ -1,8 +1,8 @@
 import { Link, NavLink } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useLogout } from "../reactQueryHooks/useAuth";
 
 function AppNav() {
-  const { setIsSigningOut } = useAuth();
+  const { logout } = useLogout();
   return (
     <nav className="flex items-center justify-around md:justify-between p-[16px]  bg-white w-full max-w-[720px] m-auto md:rounded-[8px] min-[1440px]:max-w-[1392px]">
       <div className="ml-[8px] flex items-center gap-[6px]">
@@ -61,7 +61,7 @@ function AppNav() {
       </div>
 
       <div className="flex items-center justify-center gap-3">
-        <button className="" onClick={() => setIsSigningOut(true)}>
+        <button className="" onClick={logout}>
           <img
             src="/signout-icon.png"
             alt="signout-icon"

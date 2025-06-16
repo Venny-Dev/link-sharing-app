@@ -1,11 +1,7 @@
 import CreatedLink from "./CreatedLink";
 import { useEffect, useState } from "react";
-import { getUserProfile } from "../firebase/firebaseUtils";
-import { toast } from "react-toastify";
-import { useAuth } from "../contexts/AuthContext";
 
-function PreviewProfile({ view, userId }) {
-  const { setUser } = useAuth;
+function PreviewProfile({ view, user }) {
   const [previewDetails, setPreviewDetails] = useState({
     fullName: "",
     links: [],
@@ -14,26 +10,16 @@ function PreviewProfile({ view, userId }) {
   });
 
   useEffect(() => {
-    async function getPrevDetails() {
-      if (userId) {
-        try {
-          const data = await getUserProfile(userId);
-
-          setPreviewDetails((prevDetails) => ({
-            ...prevDetails,
-            fullName:
-              `${data.firstName} ${data.lastName}` || prevDetails.fullName,
-            email: data.email || prevDetails.email,
-            profilePicture: data.profilePicture || prevDetails.profilePicture,
-            links: data.links,
-          }));
-        } catch (err) {
-          toast.error("Error getting user details");
-        }
-      }
+    if (user) {
+      setPreviewDetails((prevDetails) => ({
+        ...prevDetails,
+        fullName: `${user.firstName} ${user.lastName}` || prevDetails.fullName,
+        email: user.email || prevDetails.email,
+        profilePicture: user.image || prevDetails.profilePicture,
+        links: user.links,
+      }));
     }
-    getPrevDetails();
-  }, [userId]);
+  }, [user]);
 
   return (
     <div

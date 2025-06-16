@@ -5,9 +5,10 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useAuth } from "./AuthContext";
+// import { useAuth } from "./AuthContext";
 
-import { updateUserLink, updateUserProfile } from "../firebase/firebaseUtils";
+// import { updateUserProfile } from "../firebase/firebaseUtils";
+// import { getUserProfile } from "../firebase/firebaseUtils";
 import { toast } from "react-toastify";
 import {
   options,
@@ -15,28 +16,33 @@ import {
   handleLinkChange,
 } from "../firebase/helpers";
 
-import { getUserProfile } from "../firebase/firebaseUtils";
+import {
+  useGetLinks,
+  useUpdateLinks,
+  useUpdateUser,
+} from "../reactQueryHooks/useAppFeatures";
 
 const AppFeaturesContexts = createContext();
 
 function AppFeaturesProvider({ children }) {
-  const { user, setIsLoading } = useAuth();
-  const [amtOfLinkContainer, setAmtOfLinkContainer] = useState([]);
+  // const { user, setIsLoading } = useAuth();
   const [errorId, setErrorId] = useState([]);
   const [image, setImage] = useState(null);
+  const { links, isGettingLinks } = useGetLinks();
+  const [amtOfLinkContainer, setAmtOfLinkContainer] = useState([]);
+  const { saveLinks, isSavingLinks } = useUpdateLinks();
+  const { updateUser, isUpdating } = useUpdateUser();
 
   useEffect(() => {
-    if (user) {
-      setAmtOfLinkContainer(user.links || []);
-    } else {
-      setAmtOfLinkContainer([]);
+    if (!isGettingLinks) {
+      setAmtOfLinkContainer(links);
     }
-  }, [user]);
+  }, [links]);
 
   function handleAddLinkContainer() {
-    const newId = amtOfLinkContainer.length
-      ? amtOfLinkContainer[amtOfLinkContainer.length - 1].id + 1
-      : 1;
+    const newId = amtOfLinkContainer.length ? amtOfLinkContainer.length + 1 : 1;
+
+    // console.log(options);
 
     setAmtOfLinkContainer([
       ...amtOfLinkContainer,
@@ -44,7 +50,7 @@ function AppFeaturesProvider({ children }) {
         id: newId,
         value: options[0].value,
         icon: options[0].icon,
-        link: "",
+        link: options[0].defaultValue,
         label: "",
       },
     ]);
@@ -56,7 +62,6 @@ function AppFeaturesProvider({ children }) {
     );
     if (updatedContainers.length === 0) {
       try {
-        // await updateUserLink(user.id, []);
         setAmtOfLinkContainer([]);
       } catch (err) {
         toast.error(err.message);
@@ -66,9 +71,6 @@ function AppFeaturesProvider({ children }) {
         const newContainers = prevContainers.filter(
           ({ id }) => id !== selectedId
         );
-        updateUserLink(user.id, newContainers).catch((err) => {
-          toast.error(err.message);
-        });
         return newContainers;
       });
     }
@@ -92,21 +94,22 @@ function AppFeaturesProvider({ children }) {
       return;
     }
 
-    setIsLoading(true);
-    try {
-      await updateUserLink(user.id, amtOfLinkContainer);
-      toast.success("Link(s) updated successfully");
-    } catch (err) {
-      toast.error(err.message);
-    } finally {
-      setIsLoading(false);
-    }
+    const links = amtOfLinkContainer.map(
+      ({ label, icon, value: name, ...link }) => ({
+        ...link,
+        name,
+      })
+    );
+
+    saveLinks({ links });
   }
 
-  function handleInputChange(e, setUserLink, id) {
+  function handleInputChange(e, setUserLink, id, defaultValue) {
     setUserLink((prevPlatformAndLink) => ({
       ...prevPlatformAndLink,
-      userLink: e.target.value,
+      userLink: e.target.value.startsWith(defaultValue)
+        ? e.target.value
+        : defaultValue,
     }));
 
     setErrorId((prevIds) => prevIds.filter((prevId) => prevId.id !== id));
@@ -126,27 +129,33 @@ function AppFeaturesProvider({ children }) {
     }
   }, []);
 
-  async function handleProfileSubmit(e, userDetails, setUser) {
+  async function handleProfileSubmit(e, userDetails) {
     e.preventDefault();
 
-    setIsLoading(true);
+    // console.log(userDetails);
 
-    try {
-      await updateUserProfile(user.id, userDetails, image);
-      console.log("User profile updated successfully:", userDetails);
-      console.log(user);
-
-      const updatedUser = await getUserProfile(user.id);
-
-      console.log(updatedUser);
-      setUser(updatedUser);
-
-      toast.success("Profile updated successfully");
-    } catch (error) {
-      toast.error(error.message);
-    } finally {
-      setIsLoading(false);
+    if (!userDetails.firstName || !userDetails.lastName) {
+      return toast.error("First and Last name is required");
     }
+
+    const formData = new FormData();
+
+    formData.append("firstName", userDetails.firstName);
+    formData.append("lastName", userDetails.lastName);
+
+    if (image) {
+      formData.append("photo", image);
+    }
+
+    updateUser(formData);
+
+    // try {
+    //   toast.success("Profile updated successfully");
+    // } catch (error) {
+    //   toast.error(error.message);
+    // } finally {
+    //   setIsLoading(false);
+    // }
   }
 
   return (
@@ -164,6 +173,8 @@ function AppFeaturesProvider({ children }) {
         handleProfileSubmit,
         handleChangeUserData,
         setImage,
+        isSavingLinks,
+        isUpdating,
       }}
     >
       {children}

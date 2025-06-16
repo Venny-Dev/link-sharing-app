@@ -7,11 +7,12 @@ import {
   handleImageChange,
   handleDragOver,
 } from "../firebase/helpers";
+import Loader from "./Loader";
 
 function Profile() {
-  const { user, setUser } = useAuth();
+  const { user } = useAuth();
 
-  const { handleChangeUserData, setImage, handleProfileSubmit } =
+  const { handleChangeUserData, setImage, handleProfileSubmit, isUpdating } =
     useAppFeatures();
 
   const [userDetails, setUserDetails] = useState({
@@ -25,9 +26,9 @@ function Profile() {
     setUserDetails((prevDetails) => ({
       ...prevDetails,
       email: user?.email || prevDetails.email,
-      firstName: user?.firstName,
+      firstName: user?.firstName || prevDetails.firstName,
       lastName: user?.lastName || prevDetails.lastName,
-      profilePicture: user?.profilePicture || prevDetails.profilePicture,
+      profilePicture: user?.image || prevDetails.profilePicture,
     }));
   }, [user]);
 
@@ -94,7 +95,7 @@ function Profile() {
       </div>
 
       <div className="bg-[#FAFAFA] p-[20px] mt-[24px] rounded-[8px]">
-        <form onSubmit={(e) => handleProfileSubmit(e, userDetails, setUser)}>
+        <form onSubmit={(e) => handleProfileSubmit(e, userDetails)}>
           <div className="flex flex-col relative ">
             <label className="text-[#333333]  font-[400] text-[12px] leading-[18px]">
               First name*
@@ -134,6 +135,7 @@ function Profile() {
               className="border py-[12px] px-[16px] outline-none rounded-[8px] mt-[4px] placeholder-opacity-[50%] focus:outline-none focus:border-[#633CFF] focus:shadow-xl"
               placeholder="e.g. example@email.com"
               value={userDetails.email}
+              disabled
               onChange={(e) =>
                 handleChangeUserData(e, userDetails, setUserDetails)
               }
@@ -141,8 +143,11 @@ function Profile() {
           </div>
 
           <div className="flex justify-end">
-            <Button className="mt-[40px] text-white w-full min-[1440px]:max-w-[91px]">
-              Save
+            <Button
+              className="mt-[40px] text-white w-full min-[1440px]:max-w-[91px] flex items-center justify-center"
+              isDiaabled={isUpdating}
+            >
+              {isUpdating ? <Loader /> : "Save"}
             </Button>
           </div>
         </form>

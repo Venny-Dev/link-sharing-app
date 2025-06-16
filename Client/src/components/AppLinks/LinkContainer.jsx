@@ -21,6 +21,8 @@ function LinkContainer({ id, position, container }) {
     selectedPlatform: options[0],
     userLink: container.link,
   });
+  const [defaultValue, setDefaultValue] = useState("");
+  // console.log(container);
 
   useEffect(() => {
     if (container.value) {
@@ -35,12 +37,19 @@ function LinkContainer({ id, position, container }) {
         }));
       }
     }
+    const optionObj = options.find(
+      (option) => option.value === container.value
+    );
+    setDefaultValue(optionObj.defaultValue);
   }, [container.value, options]);
+
+  // console.log(defaultValue);
 
   function handleSelectChange(selected) {
     setPlatformAndLink((prevPlatformAndLink) => ({
       ...prevPlatformAndLink,
       selectedPlatform: selected,
+      userLink: selected.defaultValue,
     }));
     handlePlatformChange(selected, id);
   }
@@ -84,9 +93,10 @@ function LinkContainer({ id, position, container }) {
           className={`border py-[12px] pr-[16px] pl-[44px] rounded-[8px] mt-[4px] placeholder-opacity-[50%]   focus:outline-none focus:border-[#633CFF] focus:shadow-xl ${
             errorId.some((errid) => errid.id === id) ? "border-[#FF3939]" : ""
           }`}
-          placeholder="e.g. github.com/examplename"
           value={platformAndLink.userLink}
-          onChange={(e) => handleInputChange(e, setPlatformAndLink, id)}
+          onChange={(e) =>
+            handleInputChange(e, setPlatformAndLink, id, defaultValue)
+          }
         />
         <img src="/linkblack-icon.png" className="absolute top-[40px] left-3" />
         {errorId.map(
@@ -106,3 +116,16 @@ function LinkContainer({ id, position, container }) {
 }
 
 export default LinkContainer;
+
+//  const handleChange = (e) => {
+//     const newValue = e.target.value;
+
+//     // Don't allow deletion of the default value
+//     if (newValue.startsWith(defaultValue)) {
+//       setValue(newValue);
+//     }
+//     // If user tries to delete part of default, reset to default
+//     else {
+//       setValue(defaultValue);
+//     }
+//   };
