@@ -22,8 +22,9 @@ const createSendToken = (user, status, res) => {
     httpOnly: true, // Allows js-cookie to access it (but is less secure)
     secure: false, // set to true in production (HTTPS)
     path: "/", // ensures cookie is accessible on all routes
+    secure: process.env.NODE_ENV === "production", // true in production
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   };
-  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
   res.cookie("jwt", token, cookieOptions);
   // res.cookie
