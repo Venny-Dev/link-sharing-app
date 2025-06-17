@@ -6,7 +6,7 @@ import {
   handleDrop,
   handleImageChange,
   handleDragOver,
-} from "../firebase/helpers";
+} from "../utils/helpers";
 import Loader from "./Loader";
 
 function Profile() {

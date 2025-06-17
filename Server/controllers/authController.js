@@ -21,9 +21,9 @@ const createSendToken = (user, status, res) => {
     maxAge: Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000, // e.g. 7 days
     httpOnly: true, // Allows js-cookie to access it (but is less secure)
     secure: false, // set to true in production (HTTPS)
-    // sameSite: "none", // recommended default
     path: "/", // ensures cookie is accessible on all routes
   };
+  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
   res.cookie("jwt", token, cookieOptions);
   // res.cookie

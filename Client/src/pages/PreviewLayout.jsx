@@ -6,7 +6,7 @@ import { useAuth } from "../contexts/AuthContext";
 import Loader from "../components/Loader";
 
 import PreviewProfile from "../components/PreviewProfile";
-import { handleCopy } from "../firebase/helpers";
+import { handleCopy } from "../utils/helpers";
 
 function Preview() {
   const navigate = useNavigate();

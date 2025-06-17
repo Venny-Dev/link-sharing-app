@@ -1,11 +1,12 @@
 import { useAuth } from "../contexts/AuthContext";
+import { useLogout } from "../reactQueryHooks/useAuth";
+
 import Button from "./Button";
-import { signOutuser } from "../firebase/firebaseUtils";
-import { useNavigate } from "react-router-dom";
+import Loader from "./Loader";
 
 function SignoutModal() {
-  const navigate = useNavigate();
-  const { setIsSigningOut, setIsLoading } = useAuth();
+  const { setIsSigningOut } = useAuth();
+  const { logout, isLoggingOut } = useLogout();
 
   return (
     <div className=" absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-56 h-32 bg-white rounded-[8px] text-center flex items-center justify-center z-10 flex-col gap-4 ">
@@ -18,10 +19,10 @@ function SignoutModal() {
           No
         </Button>
         <Button
-          className=" text-white "
-          onClick={() => signOutuser(navigate, setIsLoading, setIsSigningOut)}
+          className=" text-white flex items-center justify-center"
+          onClick={logout}
         >
-          Yes
+          {isLoggingOut ? <Loader /> : " Yes"}
         </Button>
       </div>
     </div>

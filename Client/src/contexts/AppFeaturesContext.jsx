@@ -7,14 +7,12 @@ import {
 } from "react";
 // import { useAuth } from "./AuthContext";
 
-// import { updateUserProfile } from "../firebase/firebaseUtils";
-// import { getUserProfile } from "../firebase/firebaseUtils";
 import { toast } from "react-toastify";
 import {
   options,
   validateLinksInputFields,
   handleLinkChange,
-} from "../firebase/helpers";
+} from "../utils/helpers";
 
 import {
   useGetLinks,

@@ -103,7 +103,7 @@ export function useResetPassword() {
 
 export function useLogout() {
   const navigate = useNavigate();
-  const { mutate: logout } = useMutation({
+  const { mutate: logout, isLoading: isLoggingOut } = useMutation({
     mutationFn: logoutApi,
     onSuccess: () => {
       navigate("/login");
@@ -114,5 +114,5 @@ export function useLogout() {
     },
   });
 
-  return { logout };
+  return { logout, isLoggingOut };
 }

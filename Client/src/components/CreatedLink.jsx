@@ -1,4 +1,4 @@
-import { getPlatformColor } from "../firebase/helpers";
+import { getPlatformColor } from "../utils/helpers";
 
 function CreatedLink({ link, view }) {
   return (
