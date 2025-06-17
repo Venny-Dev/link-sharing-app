@@ -17,18 +17,26 @@ const DB = process.env.DATABASE.replace(
 );
 mongoose.connect(DB).then(() => console.log("DB connection successful"));
 
-const port = process.env.PORT || 3000;
-const server = app.listen(port, () => {
-  console.log(`App running on port ${port}...`);
-});
+const app = require("./app");
 
-process.on("unhandledRejection", (err) => {
-  console.log(err.name, err.message);
-  console.log("UNHANDLED REJECTION, Shutting down....");
-  server.close(() => {
-    // Doing this 0here is optional
-    process.exit(1);
-  });
-});
+// Connect to database (but don't await it at startup)
+mongoose
+  .connect(DB)
+  .then(() => console.log("DB connection successful"))
+  .catch((err) => console.error("DB connection failed:", err));
 
 module.exports = app;
+
+// const port = process.env.PORT || 3000;
+// const server = app.listen(port, () => {
+//   console.log(`App running on port ${port}...`);
+// });
+
+// process.on("unhandledRejection", (err) => {
+//   console.log(err.name, err.message);
+//   console.log("UNHANDLED REJECTION, Shutting down....");
+//   server.close(() => {
+//     // Doing this 0here is optional
+//     process.exit(1);
+//   });
+// });
