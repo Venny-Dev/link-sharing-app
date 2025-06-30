@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 
 class ApiClient {
   getHeader() {
-    const token = Cookies.get("jwt");
+    const token = Cookies.get("token");
     return token ? `Bearer ${token}` : "";
   }
   async request(endpoint, options = {}) {
@@ -31,7 +31,7 @@ class ApiClient {
       const data = await res.json();
       // console.log(data);
       if (data.token) {
-        Cookies.set("jwt", data.token);
+        Cookies.set("token", data.token);
       }
 
       if (!res.ok) {
