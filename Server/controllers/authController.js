@@ -39,6 +39,28 @@ const createSendToken = (user, status, res) => {
   });
 };
 
+const getClientDomain = (req) => {
+  // Try to get the origin first (most reliable for CORS requests)
+  const origin = req.get("origin");
+  if (origin) {
+    return origin;
+  }
+
+  // Fallback to referer
+  const referer = req.get("referer");
+  if (referer) {
+    try {
+      const url = new URL(referer);
+      return `${url.protocol}//${url.host}`;
+    } catch (e) {
+      // Invalid referer URL
+    }
+  }
+
+  // Final fallback to current host
+  return `${req.protocol}://${req.get("host")}`;
+};
+
 exports.signup = catchAsync(async (req, res, next) => {
   // Create user
   // console.log(req.body);
@@ -55,9 +77,11 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   // venny-devlinks.vercel.app
   // generate link and send email
-  const verificationLink = `${req.protocol}://${req.get(
-    "host"
-  )}/verify-email?token=${token}`;
+  const clientDomain = getClientDomain(req);
+  const verificationLink = `${clientDomain}/verify-email?token=${token}`;
+  // const verificationLink = `${req.protocol}://${req.get(
+  //   "host"
+  // )}/verify-email?token=${token}`;
   const templatePath = path.join(
     __dirname,
     "../emailTemplates/verifyEmail.html"

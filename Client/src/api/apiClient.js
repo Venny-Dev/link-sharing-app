@@ -29,7 +29,7 @@ class ApiClient {
     try {
       const res = await fetch(url, config);
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
       if (data.token) {
         Cookies.set("jwt", data.token);
       }
