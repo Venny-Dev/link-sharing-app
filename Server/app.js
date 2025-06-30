@@ -26,16 +26,6 @@ const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   message: "Too many requests from this IP, please try again in one hour",
 });
-app.use("/api", limiter);
-
-app.use(cookieParser());
-app.use(express.json({ limit: "10kb" }));
-
-app.use(
-  hpp({
-    whitelist: ["name", "link"],
-  })
-);
 
 app.use(
   cors({
@@ -47,8 +37,31 @@ app.use(
 );
 app.options(/.*/, cors());
 
+// app.use(
+//   cors({
+//     origin: "*", // Allows any origin
+//     // credentials: true,
+//     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//   })
+// );
+
+app.use("/api", limiter);
+
+app.use(cookieParser());
+app.use(express.json({ limit: "10kb" }));
+
+app.use(
+  hpp({
+    whitelist: ["name", "link"],
+  })
+);
+
 app.use("/api/links", linkRouter);
 app.use("/api/user", userRouter);
+// app.use("/test", (req, res) => {
+//   res.json({ message: "User router is working" });
+// });
 
 app.all(/.*/, (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

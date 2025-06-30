@@ -27,11 +27,11 @@ const createSendToken = (user, status, res) => {
   };
 
   res.cookie("jwt", token, cookieOptions);
-  // res.cookie
   user.password = undefined;
 
   res.status(status).json({
     status: "success",
+    token,
     data: {
       user,
     },
@@ -154,13 +154,12 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.protect = catchAsync(async (req, res, next) => {
   let token;
 
-  // console.log(req.cookies);
-  // if (
-  //   req.headers.authorization &&
-  //   req.headers.authorization.startsWith("Bearer")
-  // ) {
-  //   token = req.headers.authorization.split(" ")[1];
-  // }
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  }
   if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }

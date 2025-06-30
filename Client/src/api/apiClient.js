@@ -1,12 +1,19 @@
 import { BASEURL } from "../utils/constants";
+import Cookies from "js-cookie";
 
 class ApiClient {
+  getHeader() {
+    const token = Cookies.get("jwt");
+    return token ? `Bearer ${token}` : "";
+  }
   async request(endpoint, options = {}) {
     const url = `${BASEURL}${endpoint}`;
+    const header = this.getHeader();
 
     const config = {
       headers: {
         "Content-Type": "application/json",
+        ...(header && { Authorization: header }),
         ...options.headers,
       },
       credentials: "include",
@@ -22,6 +29,10 @@ class ApiClient {
     try {
       const res = await fetch(url, config);
       const data = await res.json();
+      console.log(data);
+      if (data.token) {
+        Cookies.set("jwt", data.token);
+      }
 
       if (!res.ok) {
         throw new Error(data.message || "Something went wrong");
